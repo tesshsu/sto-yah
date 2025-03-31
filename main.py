@@ -1,33 +1,49 @@
 from flask import Flask, jsonify, render_template
+import yfinance as yf
 import os
 
 app = Flask(__name__, 
             static_folder='src/static', 
             template_folder='src/static')
 
-# Example stock data with price history and percentage change
-stock_data = {
-    "Apple Inc.": {
-        "current_price": 219.45,
-        "price_history": [218.50, 219.00, 218.80, 219.20, 219.45],
-        "percent_change": 0.43
-    },
-    "Alphabet Inc.": {
-        "current_price": 153.55,
-        "price_history": [152.80, 153.00, 153.20, 153.40, 153.55],
-        "percent_change": 0.49
-    },
-    "Microsoft Corporation": {
-        "current_price": 368.15,
-        "price_history": [367.00, 367.50, 367.80, 368.00, 368.15],
-        "percent_change": 0.31
-    },
-    "Tesla, Inc": {
-       "current_price": 248.62,
-       "price_history": [247.50, 248.00, 248.20, 248.40, 248.62],
-       "percent_change": 0.46
-    }
-}
+# List of top 20 stock symbols (you can adjust this list)
+top_stocks = [
+    "AAPL", "GOOGL", "MSFT", "TSLA", "AMZN", "META", "NVDA", "BRK-B", 
+    "JPM", "V", "WMT", "MA", "PG", "UNH", "HD", "DIS", "PYPL", "NFLX", 
+    "ADBE", "CRM"
+]
+
+def get_stock_data(symbol):
+    try:
+        stock = yf.Ticker(symbol)
+        # Fetch the last 5 days of data for the price history
+        hist = stock.history(period="5d")
+        if hist.empty:
+            return None
+        prices = hist['Close'].tolist()[-5:]  # Last 5 closing prices
+        if len(prices) < 2:
+            return None
+        current_price = prices[-1]
+        previous_price = prices[0]
+        percent_change = ((current_price - previous_price) / previous_price) * 100
+        return {
+            "current_price": round(current_price, 2),
+            "price_history": [round(price, 2) for price in prices],
+            "percent_change": round(percent_change, 2)
+        }
+    except Exception as e:
+        print(f"Error fetching data for {symbol}: {e}")
+        return None
+
+# Fetch data for all stocks
+stock_data = {}
+for symbol in top_stocks:
+    data = get_stock_data(symbol)
+    if data:
+        # Use the stock's name (or symbol if name isn't available)
+        stock_info = yf.Ticker(symbol).info
+        name = stock_info.get('longName', symbol)
+        stock_data[name] = data
 
 @app.route('/')
 def home():
