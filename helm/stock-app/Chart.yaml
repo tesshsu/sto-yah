@@ -1,0 +1,5 @@
+apiVersion: v2
+name: stock-app
+description: A Helm chart for deploying the Stock App on GKE
+version: 0.1.0
+appVersion: "1.0"

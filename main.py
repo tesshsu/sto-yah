@@ -6,7 +6,7 @@ app = Flask(__name__,
             static_folder='src/static', 
             template_folder='src/static')
 
-# List of top 20 stock symbols (you can adjust this list)
+# List of top 20 stock symbols
 top_stocks = [
     "AAPL", "GOOGL", "MSFT", "TSLA", "AMZN", "META", "NVDA", "BRK-B", 
     "JPM", "V", "WMT", "MA", "PG", "UNH", "HD", "DIS", "PYPL", "NFLX", 
@@ -16,11 +16,10 @@ top_stocks = [
 def get_stock_data(symbol):
     try:
         stock = yf.Ticker(symbol)
-        # Fetch the last 5 days of data for the price history
         hist = stock.history(period="5d")
         if hist.empty:
             return None
-        prices = hist['Close'].tolist()[-5:]  # Last 5 closing prices
+        prices = hist['Close'].tolist()[-5:]
         if len(prices) < 2:
             return None
         current_price = prices[-1]
@@ -35,12 +34,10 @@ def get_stock_data(symbol):
         print(f"Error fetching data for {symbol}: {e}")
         return None
 
-# Fetch data for all stocks
 stock_data = {}
 for symbol in top_stocks:
     data = get_stock_data(symbol)
     if data:
-        # Use the stock's name (or symbol if name isn't available)
         stock_info = yf.Ticker(symbol).info
         name = stock_info.get('longName', symbol)
         stock_data[name] = data
@@ -54,4 +51,5 @@ def get_stocks():
     return jsonify(stock_data)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8000, debug=True)
+    # In production, this will be run by Gunicorn, not Flask's dev server
+    app.run(host='0.0.0.0', port=8000)
