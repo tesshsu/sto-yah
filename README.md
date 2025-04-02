@@ -16,18 +16,27 @@ This project is a simple Python application that retrieves the top 20 U.S. stock
 
 ## structure
 stock-app/
-├── README.md
-├── requirements.txt
-├── main.py              # Backend application
-├── Dockerfile           # Docker setup
-├── docker-compose.yml   # Docker Compose setup
-└── src/
-    ├── __init__.py
-    ├── api.py           # Backend API logic
-    └── static/
-        ├── index.html   # Frontend HTML file
-        ├── app.js       # Frontend JavaScript file
-        └── styles.css   # Frontend CSS file
+├── README.md               # Project documentation
+├── requirements.txt        # Python dependencies
+├── main.py                 # Backend application entry point
+├── Dockerfile              # Docker setup for containerizing the app
+├── docker-compose.yml      # Docker Compose setup for local development
+├── src/                    # Source code directory
+│   ├── __init__.py         # Python package initialization
+│   ├── api.py              # Backend API logic
+│   └── static/             # Frontend static assets
+│       ├── index.html      # Frontend HTML file
+│       ├── app.js          # Frontend JavaScript file
+│       └── styles.css      # Frontend CSS file
+└── helm/                   # Helm chart directory
+    └── stock-app/          # Helm chart for the stock-app
+        ├── Chart.yaml      # Helm chart metadata
+        ├── values.yaml     # Default configuration values
+        └── templates/      # Kubernetes manifest templates
+            ├── deployment.yaml      # Deployment configuration
+            ├── service.yaml         # Service configuration
+            ├── ingress.yaml         # Ingress configuration
+            └── backend-config.yaml  # BackendConfig for health checks
 
 
 ## Prerequisites

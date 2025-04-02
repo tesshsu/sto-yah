@@ -4,6 +4,8 @@ metadata:
   name: {{ include "stock-app.fullname" . }}
   labels:
     {{- include "stock-app.labels" . | nindent 4 }}
+  annotations:
+    cloud.google.com/backend-config: '{"default": "stock-app-backend-config"}'
 spec:
   type: {{ .Values.service.type }}
   ports:
