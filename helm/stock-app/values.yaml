@@ -3,7 +3,7 @@ replicaCount: 2
 image:
   repository: gcr.io/sto-yah/stock-app
   tag: "latest"
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 service:
   type: ClusterIP

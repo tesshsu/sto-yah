@@ -29,14 +29,20 @@ stock-app/
 │       ├── app.js          # Frontend JavaScript file
 │       └── styles.css      # Frontend CSS file
 └── helm/                   # Helm chart directory
-    └── stock-app/          # Helm chart for the stock-app
-        ├── Chart.yaml      # Helm chart metadata
-        ├── values.yaml     # Default configuration values
-        └── templates/      # Kubernetes manifest templates
-            ├── deployment.yaml      # Deployment configuration
-            ├── service.yaml         # Service configuration
-            ├── ingress.yaml         # Ingress configuration
-            └── backend-config.yaml  # BackendConfig for health checks
+│    └── stock-app/          # Helm chart for the stock-app
+│        ├── Chart.yaml      # Helm chart metadata
+│        ├── values.yaml     # Default configuration values
+│        └── templates/      # Kubernetes manifest templates
+│            ├── deployment.yaml      # Deployment configuration
+│           ├── service.yaml         # Service configuration
+│           ├── ingress.yaml         # Ingress configuration
+│           └── backend-config.yaml  # BackendConfig for health checks
+terraform/
+├── main.tf            # Main Terraform configuration
+├── variables.tf       # Variables for customization
+├── outputs.tf         # Outputs after deployment
+├── provider.tf        # AWS provider configuration
+└── userdata.sh        # EC2 startup script
 
 
 ## Prerequisites
